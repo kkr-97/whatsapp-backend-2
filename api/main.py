@@ -157,27 +157,44 @@ def send_file_message(contact_person,message,file_path,driver):
     return result
 
 @app.route("/sendmsg", methods=["POST"])
-def send_whatsapp_messages():
-    data=request.json
-    print(data)
-    message=""
-    if 'message' in data:
-        message = data['message']
-    if 'details' in data:
-        resultsOfMessages = []   
-        # chrome_driver_path="./chrome.exe"
+def setup_driver():
+    try:
+        # Attempt to setup WebDriver using ChromeDriverManager
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-        time.sleep(10)
-        # driver=webdriver.Chrome(service=Service())
-        #intial connect to whatsapp
+        return driver
+    except Exception as e:
+        print("Failed to setup WebDriver using ChromeDriverManager:", str(e))
+        return None
+
+@app.route("/sendmsg", methods=["POST"])
+def send_whatsapp_messages():
+    data = request.json
+    message = data.get('message', '')
+    details = data.get('details', [])
+    resultsOfMessages = []
+
+    # Setup WebDriver
+    driver = setup_driver()
+    if not driver:
+        return jsonify({"error": "Failed to setup WebDriver"})
+
+    try:
+        # Connect to WhatsApp Web
         driver.get('https://web.whatsapp.com')
-        time.sleep(40)
-        #1
-        for detail in data['details']:
-            phone=detail.get('number')
-            isSent=send_message(phone,message,driver)
+        WebDriverWait(driver, 40).until(EC.presence_of_element_located((By.XPATH, "//div[@class='_ai05']//div[@role='textbox']")))
+        time.sleep(3)
+
+        for detail in details:
+            phone = detail.get('number')
+            isSent = send_message(phone, message, driver)
             resultsOfMessages.append({"phone": phone, "status": isSent})
-    result={"msg":"messages sent successfully","isSent":resultsOfMessages}
+    except Exception as e:
+        print("Exception while sending messages:", str(e))
+    finally:
+        # Close the WebDriver session
+        driver.quit()
+
+    result = {"msg": "Messages sent successfully", "isSent": resultsOfMessages}
     return jsonify(result)
 
 # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=options)

@@ -159,7 +159,10 @@ def send_file_message(contact_person,message,file_path,driver):
 def setup_driver():
     try:
         # Attempt to setup WebDriver using ChromeDriverManager
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+        chrome_driver_path = '/path/to/chromedriver'
+        
+        # Initialize WebDriver using the specified path
+        driver = webdriver.Chrome(executable_path=chrome_driver_path)
         return driver
     except Exception as e:
         print("Failed to setup WebDriver using ChromeDriverManager:", str(e))

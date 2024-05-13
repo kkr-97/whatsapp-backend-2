@@ -172,7 +172,7 @@ def send_whatsapp_messages():
         #intial connect to whatsapp
         driver.get('https://web.whatsapp.com')
         time.sleep(40)
-
+        #1
         for detail in data['details']:
             phone=detail.get('number')
             isSent=send_message(phone,message,driver)

@@ -161,7 +161,7 @@ def setup_driver():
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')  # Required for running as root user
         chrome_options.add_argument('--disable-dev-shm-usage')  # Required for running in Docker
-        chrome_executable_path = '/chrome.exe'  # Specify the path to Chrome executable
+        chrome_executable_path = './chrome.exe'  # Specify the path to Chrome executable
         driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager(chrome_type='google').install()), options=chrome_options, executable_path=chrome_executable_path)
         return driver
         return driver

@@ -162,7 +162,7 @@ def setup_driver():
         chrome_driver_path = '/path/to/chromedriver'
         
         # Initialize WebDriver using the specified path
-        driver = webdriver.Chrome(executable_path=chrome_driver_path)
+        driver = webdriver.Chrome(chrome_driver_path)
         return driver
     except Exception as e:
         print("Failed to setup WebDriver using ChromeDriverManager:", str(e))

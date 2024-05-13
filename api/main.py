@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.os_manager import ChromeType
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 # import pywhatkit
@@ -158,7 +159,7 @@ def send_file_message(contact_person,message,file_path,driver):
 
 def setup_driver():
     try:
-        driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+        driver = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.BRAVE).install())
         return driver
     except Exception as e:
         print("Failed to setup WebDriver using ChromeDriverManager:", str(e))

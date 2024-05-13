@@ -156,7 +156,6 @@ def send_file_message(contact_person,message,file_path,driver):
 
     return result
 
-@app.route("/sendmsg", methods=["POST"])
 def setup_driver():
     try:
         # Attempt to setup WebDriver using ChromeDriverManager

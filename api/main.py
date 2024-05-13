@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -158,11 +158,7 @@ def send_file_message(contact_person,message,file_path,driver):
 
 def setup_driver():
     try:
-        # Attempt to setup WebDriver using ChromeDriverManager
-        chrome_driver_path = '/path/to/chromedriver'
-        
-        # Initialize WebDriver using the specified path
-        driver = webdriver.Chrome(chrome_driver_path)
+        driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
         return driver
     except Exception as e:
         print("Failed to setup WebDriver using ChromeDriverManager:", str(e))
